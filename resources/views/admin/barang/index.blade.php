@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Barang</title>
+
+    <style>
+    :root {
+        --primary: #4f46e5;
+        --bg: #f1f5f9;
+        --card: #ffffff;
+        --text: #0f172a;
+        --subtext: #64748b;
+        --border: #e2e8f0;
+    }
+
+    * {
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background: var(--bg);
+    }
+
+    /* HEADER */
+    .header {
+        background: white;
+        padding: 15px 25px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header h2 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .nav {
+        display: flex;
+        gap: 20px;
+        font-size: 13px;
+        align-items: center;
+    }
+
+    .nav a {
+        text-decoration: none;
+        color: var(--subtext);
+    }
+
+    .nav a:hover {
+        color: var(--primary);
+    }
+
+    /* CONTAINER */
+    .container {
+        padding: 20px;
+    }
+
+    /* CARD */
+    .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    /* TOP ACTION */
+    .top-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        background: var(--primary);
+        color: white;
+        padding: 8px 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        background: #4338ca;
+        transform: scale(1.05);
+    }
+
+    .btn-danger {
+        background: #ef4444;
+    }
+
+    .btn-danger:hover {
+        background: #dc2626;
+    }
+
+    /* SEARCH */
+    .search-box input {
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        font-size: 13px;
+    }
+
+    /* TABLE */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    table th, table td {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    table th {
+        background: #f9fafb;
+    }
+
+    /* ACTION BUTTON */
+    .action {
+        display: flex;
+        gap: 8px;
+    }
+
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h2>Data Barang</h2>
+
+    <div class="nav">
+        <a href="/admin">Kembali ke Dashboard</a>
+        <!-- <a href="/barang">kembali</a> -->
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="card">
+
+        <!-- TOP -->
+        <div class="top-action">
+            <a href="/barang/create" class="btn">+ Tambah Barang</a>
+
+            <form method="GET" action="/barang" class="search-box">
+                <input type="text" name="search" placeholder="Cari Barang..." value="{{ request('search') }}">
+            </form>
+        </div>
+
+        <!-- TABLE -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th>Stok</th>
+                    <th>Satuan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach($barang as $b)
+                <tr>
+                    <td>{{ $b->kode_barang }}</td>
+                    <td>{{ $b->nama_barang }}</td>
+                    <td>{{ $b->stok }}</td>
+                    <td>{{ $b->satuan }}</td>
+                    <td>
+                        <div class="action">
+                            <a href="/barang/{{ $b->id }}/edit" class="btn">Edit</a>
+
+                            <form action="/barang/{{ $b->id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>
